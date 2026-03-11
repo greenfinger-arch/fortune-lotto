@@ -3,19 +3,43 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>2026 황금 기운: 풍수 로또 엔진</title>
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+  <title>2026 황금 기운 추출기 | 풍수 로또 엔진</title>
+  <meta name="description" content="2026년 당신의 공간과 오행의 기운을 분석하여 행운의 로또 번호를 추출합니다. 풍수 전문가의 로직을 담은 특별한 번호를 확인하세요." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://play.ranklamp.com/fortunelotto" />
+  <meta property="og:title" content="2026 황금 기운 추출기: 풍수 로또 엔진" />
+  <meta property="og:description" content="나의 풍수 기운으로 뽑은 오늘만으 행운 번호는? 지금 바로 무료 분석!" />
+  <meta property="og:image" content="https://play.ranklamp.com/fortunelotto/og-image.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="2026 황금 기운 추출기" />
+  <meta name="twitter:description" content="풍수지리로 분석하는 나만의 로또 당첨운." />
+  <meta name="twitter:image" content="https://play.ranklamp.com/fortunelotto/og-image.jpg" />
+
+  <link rel="icon" type="image/svg+xml" href="/fortunelotto/favicon.svg" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* 폰트 및 부드러운 스크롤 설정 */
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap');
+
+    :root {
+      font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
+    }
+
     body {
       margin: 0;
       padding: 0;
       background-color: #020617;
       /* slate-950 */
-      overflow: hidden;
-      /* 모바일에서 불필요한 스크롤 방지 */
+      overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
-      /* 모바일 터치 하이라이트 제거 */
+      /* iOS 상단바 색상 대응 */
+      background-attachment: fixed;
     }
 
     #root {
@@ -25,11 +49,26 @@
       justify-content: center;
       align-items: center;
     }
+
+    /* 커스텀 스크롤바 디자인 (데스크탑용) */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
   </style>
 </head>
 
 <body>
   <div id="root"></div>
+
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
