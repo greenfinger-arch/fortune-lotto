@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // 배포 경로를 루트('/')로 설정하여 MIME 에러를 방지합니다.
-  base: '/',
+  // 중요: 서브 경로(/fortunelotto/) 배포를 위해 base를 수정합니다.
+  base: '/fortunelotto/', 
   
   plugins: [react()],
   
