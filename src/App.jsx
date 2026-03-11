@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Sparkles,
-  Home,
-  Share2,
-  RefreshCw,
-  CheckCircle2,
-} from "lucide-react";
+import { Sparkles, Home, Share2, RefreshCw, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { FENG_SHUI_ELEMENTS, SPOTS } from "./constants";
 
@@ -57,7 +51,8 @@ const App = () => {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         const particles = [];
-        const color = FENG_SHUI_ELEMENTS[userChoice.element]?.color || "#fbbf24";
+        const color =
+          FENG_SHUI_ELEMENTS[userChoice.element]?.color || "#fbbf24";
         for (let i = 0; i < 60; i++) {
           particles.push({
             x: Math.random() * canvas.width,
@@ -101,12 +96,13 @@ const App = () => {
   }, [step, userChoice.element]);
 
   const getThemeColor = () =>
-    userChoice.element ? FENG_SHUI_ELEMENTS[userChoice.element].color : "#f59e0b";
+    userChoice.element
+      ? FENG_SHUI_ELEMENTS[userChoice.element].color
+      : "#f59e0b";
 
   return (
     /* 최상위: 100dvh를 주어 화면 전체를 차지하게 하고, flex-col과 py-8로 상하 여백 확보 */
     <div className="relative w-full h-[100dvh] flex flex-col items-center justify-center font-sans overflow-hidden touch-none py-8">
-      
       {/* 배경 광원 효과 */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
         <div
@@ -116,11 +112,15 @@ const App = () => {
       </div>
 
       {/* 메인 카드: 너비(w-[92%])와 최대 높이(max-h-[80dvh])를 조정하여 콤팩트하게 교정 */}
-      <motion.div 
+      <motion.div
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={0.15}
-        className="w-[92%] max-w-[400px] bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl border border-white/10 relative z-10 overflow-hidden flex flex-col max-h-[80dvh]"
+        /* w-[88%]: 양옆에 여백을 더 주어 '떠 있는 카드' 느낌을 강조합니다.
+     max-w-[360px]: 가로가 너무 퍼지지 않게 꽉 잡아줍니다. (핵심!)
+     max-h-[85dvh]: 세로 높이를 조금 더 허용하여 답답함을 해소합니다.
+  */
+        className="w-[88%] max-w-[360px] bg-slate-900/85 backdrop-blur-2xl rounded-[2.8rem] shadow-2xl border border-white/10 relative z-10 overflow-hidden flex flex-col max-h-[85dvh]"
       >
         <header className="pt-7 pb-3 text-center flex-shrink-0">
           <motion.div
@@ -156,16 +156,27 @@ const App = () => {
                     {Object.keys(FENG_SHUI_ELEMENTS).map((key) => (
                       <button
                         key={key}
-                        onClick={() => setUserChoice({ ...userChoice, element: key })}
+                        onClick={() =>
+                          setUserChoice({ ...userChoice, element: key })
+                        }
                         className={`py-3 rounded-2xl border-2 transition-all flex flex-col items-center ${
-                          userChoice.element === key 
-                            ? "border-current bg-white/10 scale-105 shadow-lg shadow-current/10" 
+                          userChoice.element === key
+                            ? "border-current bg-white/10 scale-105 shadow-lg shadow-current/10"
                             : "border-slate-800 opacity-40"
                         }`}
-                        style={{ color: userChoice.element === key ? FENG_SHUI_ELEMENTS[key].color : "#94a3b8" }}
+                        style={{
+                          color:
+                            userChoice.element === key
+                              ? FENG_SHUI_ELEMENTS[key].color
+                              : "#94a3b8",
+                        }}
                       >
-                        <span className="text-base font-black">{FENG_SHUI_ELEMENTS[key].name[0]}</span>
-                        <span className="text-[7px] mt-1 font-bold">{FENG_SHUI_ELEMENTS[key].name.split(" ")[1]}</span>
+                        <span className="text-base font-black">
+                          {FENG_SHUI_ELEMENTS[key].name[0]}
+                        </span>
+                        <span className="text-[7px] mt-1 font-bold">
+                          {FENG_SHUI_ELEMENTS[key].name.split(" ")[1]}
+                        </span>
                       </button>
                     ))}
                   </div>
@@ -179,21 +190,36 @@ const App = () => {
                     {SPOTS.map((spot) => (
                       <button
                         key={spot.id}
-                        onClick={() => setUserChoice({ ...userChoice, spot: spot.id })}
+                        onClick={() =>
+                          setUserChoice({ ...userChoice, spot: spot.id })
+                        }
                         className={`w-full flex items-center justify-between p-3.5 rounded-2xl border transition-all ${
-                          userChoice.spot === spot.id 
-                          ? "border-amber-500 bg-amber-500/15" 
-                          : "border-slate-800 bg-slate-800/40"
+                          userChoice.spot === spot.id
+                            ? "border-amber-500 bg-amber-500/15"
+                            : "border-slate-800 bg-slate-800/40"
                         }`}
                       >
                         <div className="flex items-center gap-3 text-left">
-                          <Home size={16} className={userChoice.spot === spot.id ? "text-amber-500" : "text-slate-600"} />
+                          <Home
+                            size={16}
+                            className={
+                              userChoice.spot === spot.id
+                                ? "text-amber-500"
+                                : "text-slate-600"
+                            }
+                          />
                           <div>
-                            <p className="text-sm font-bold text-slate-200">{spot.name}</p>
-                            <p className="text-[8px] text-slate-500 leading-tight mt-0.5">{spot.desc}</p>
+                            <p className="text-sm font-bold text-slate-200">
+                              {spot.name}
+                            </p>
+                            <p className="text-[8px] text-slate-500 leading-tight mt-0.5">
+                              {spot.desc}
+                            </p>
                           </div>
                         </div>
-                        {userChoice.spot === spot.id && <CheckCircle2 size={14} className="text-amber-500" />}
+                        {userChoice.spot === spot.id && (
+                          <CheckCircle2 size={14} className="text-amber-500" />
+                        )}
                       </button>
                     ))}
                   </div>
@@ -210,8 +236,14 @@ const App = () => {
             )}
 
             {step === 2 && (
-              <motion.div key="step2" className="py-20 text-center relative flex flex-col justify-center items-center h-full min-h-[300px]">
-                <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+              <motion.div
+                key="step2"
+                className="py-20 text-center relative flex flex-col justify-center items-center h-full min-h-[300px]"
+              >
+                <canvas
+                  ref={canvasRef}
+                  className="absolute inset-0 w-full h-full pointer-events-none"
+                />
                 <div className="relative z-10">
                   <motion.div
                     animate={{ opacity: [0.4, 1, 0.4] }}
@@ -220,7 +252,9 @@ const App = () => {
                   >
                     Analyzing
                   </motion.div>
-                  <p className="text-slate-500 text-[10px] mt-6 tracking-[0.2em] uppercase">행운 데이터 추출 중...</p>
+                  <p className="text-slate-500 text-[10px] mt-6 tracking-[0.2em] uppercase">
+                    행운 데이터 추출 중...
+                  </p>
                 </div>
               </motion.div>
             )}
@@ -228,13 +262,19 @@ const App = () => {
             {step === 3 && (
               <motion.div key="step3" className="text-center space-y-6 pt-2">
                 <div className="p-5 bg-slate-950/40 rounded-[2rem] border border-white/5">
-                  <h3 className="text-[9px] font-bold text-slate-600 tracking-[0.4em] uppercase mb-4">Your Lucky Numbers</h3>
+                  <h3 className="text-[9px] font-bold text-slate-600 tracking-[0.4em] uppercase mb-4">
+                    Your Lucky Numbers
+                  </h3>
                   <div className="flex flex-wrap gap-2 justify-center mb-6">
                     {luckyNumbers.map((num, i) => (
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ type: "spring", damping: 12, delay: i * 0.1 }}
+                        transition={{
+                          type: "spring",
+                          damping: 12,
+                          delay: i * 0.1,
+                        }}
                         key={i}
                         className="w-9 h-9 flex items-center justify-center rounded-full font-black text-slate-950 text-xs shadow-lg"
                         style={{ backgroundColor: getThemeColor() }}
@@ -245,13 +285,26 @@ const App = () => {
                   </div>
                   <div className="bg-slate-900/90 p-4 rounded-xl border border-white/5">
                     <p className="text-[11px] text-slate-300 leading-relaxed italic">
-                      "{FENG_SHUI_ELEMENTS[userChoice.element].advices[Math.floor(Math.random() * FENG_SHUI_ELEMENTS[userChoice.element].advices.length)]}"
+                      "
+                      {
+                        FENG_SHUI_ELEMENTS[userChoice.element].advices[
+                          Math.floor(
+                            Math.random() *
+                              FENG_SHUI_ELEMENTS[userChoice.element].advices
+                                .length,
+                          )
+                        ]
+                      }
+                      "
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <button onClick={handleShare} className="w-full py-4 bg-indigo-600 rounded-2xl flex items-center justify-center gap-3 font-bold hover:bg-indigo-500 transition-all text-xs active:scale-95 shadow-lg shadow-indigo-600/20">
+                  <button
+                    onClick={handleShare}
+                    className="w-full py-4 bg-indigo-600 rounded-2xl flex items-center justify-center gap-3 font-bold hover:bg-indigo-500 transition-all text-xs active:scale-95 shadow-lg shadow-indigo-600/20"
+                  >
                     <Share2 size={16} /> 당첨 기원 결과 공유
                   </button>
                   <button
