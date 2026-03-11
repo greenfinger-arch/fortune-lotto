@@ -1,4 +1,4 @@
-/* 프리텐다드 폰트 적용 (가독성 최적화) */
+/* 프리텐다드 폰트 적용 */
 @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap');
 
 :root {
@@ -8,7 +8,6 @@
   color-scheme: dark;
   color: #f8fafc;
   background-color: #020617;
-
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -20,112 +19,48 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  /* 고정된 가변 높이: 주소창 제외한 순수 뷰포트 */
   height: 100dvh;
 
-  /* Safe Area 대응: 기기별 상하단 노치 및 홈 바 여백 확보 */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
+  /* Safe Area 대응 */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at top, #1e1b4b 0%, #020617 100%);
+  /* 배경은 App.jsx의 광원 효과와 겹치지 않게 어둡고 깊이감 있게 설정 */
+  background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
   background-attachment: fixed;
 
-  /* 페이지가 위아래로 덜렁거리는 현상(Rubber-banding) 차단 */
   overflow: hidden;
   touch-action: none;
   box-sizing: border-box;
 }
 
-/* 2. 리액트 루트: 실제 앱의 논리적 영역 */
+/* 2. 리액트 루트: App.jsx가 꽉 차게 들어갈 수 있도록 설정 */
 #root {
   width: 100%;
-  max-width: 480px;
-  /* 부모 body의 padding을 제외한 100% 높이 사용 */
   height: 100%;
-  margin: 0 auto;
-  padding: 1.2rem;
-  box-sizing: border-box;
-
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
-/* 3. 제목 스타일: 황금빛 그라데이션 및 크기 최적화 */
-h1 {
-  font-size: clamp(1.6rem, 5vw, 2rem);
-  font-weight: 900;
-  line-height: 1.2;
-  margin-bottom: 0.8rem;
-  background: linear-gradient(to bottom, #fde68a, #fbbf24);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-}
-
-/* 4. 버튼: 터치 감도와 시각 효과 강화 */
-button {
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.8em 1.5em;
-  font-size: 1.05em;
-  font-weight: 700;
-  background-color: rgba(255, 255, 255, 0.07);
-  color: #fbbf24;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:hover:not(:disabled) {
-  background-color: #fbbf24;
-  color: #020617;
-  transform: translateY(-2px);
-}
-
-button:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-/* 5. 카드 컨테이너: 앱의 핵심 영역 */
-.card {
-  width: 100%;
-  /* 화면이 너무 긴 폰에서 늘어지지 않도록 최대 높이 제한 */
-  max-height: 75dvh;
-  overflow-y: auto;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 28px;
-  padding: 1.5rem;
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-
-  /* 내부 스크롤 시에도 쫀득하게 */
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 커스텀 스크롤바 (카드 전용) */
-.card::-webkit-scrollbar {
+/* 3. 스크롤바 최적화 (App.jsx의 'custom-scrollbar' 클래스와 매칭) */
+.custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
 
-.card::-webkit-scrollbar-thumb {
-  background: rgba(251, 191, 36, 0.4);
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(251, 191, 36, 0.2);
   border-radius: 10px;
+}
+
+/* 4. 터치 하이라이트 제거 (모바일 웹 앱 느낌 강화) */
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
