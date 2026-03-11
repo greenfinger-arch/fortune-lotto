@@ -5,7 +5,6 @@ import {
   Home,
   Share2,
   RefreshCw,
-  ExternalLink,
   CheckCircle2,
 } from "lucide-react";
 import confetti from "canvas-confetti";
@@ -17,6 +16,7 @@ const App = () => {
   const [luckyNumbers, setLuckyNumbers] = useState([]);
   const canvasRef = useRef(null);
 
+  // 행운 번호 생성 로직 (동일)
   const generateFortuneNumbers = () => {
     const selectedElement = FENG_SHUI_ELEMENTS[userChoice.element];
     const numbers = new Set();
@@ -31,11 +31,12 @@ const App = () => {
     return Array.from(numbers).sort((a, b) => a - b);
   };
 
+  // 공유 기능 (동일)
   const handleShare = async () => {
     const shareData = {
       title: "2026 황금 기운 추출기",
       text: `나의 오행 기운으로 뽑은 행운의 번호: ${luckyNumbers.join(", ")}!`,
-      url: window.location.href, // 현재 경로를 동적으로 가져옴
+      url: window.location.href,
     };
     try {
       if (navigator.share) {
@@ -49,6 +50,7 @@ const App = () => {
     }
   };
 
+  // 분석 애니메이션 및 번호 생성 (동일)
   useEffect(() => {
     let animationFrameId;
     if (step === 2) {
@@ -105,25 +107,25 @@ const App = () => {
     userChoice.element ? FENG_SHUI_ELEMENTS[userChoice.element].color : "#f59e0b";
 
   return (
-    /* 최상위 컨테이너: index.css의 설정을 따르도록 배경 및 불필요한 클래스 제거 */
-    <div className="w-full flex items-center justify-center relative font-sans overflow-hidden">
+    /* 1. 최상위 컨테이너: index.css의 중앙 정렬을 활용하기 위해 'h-full'만 유지 */
+    <div className="relative w-full h-full flex items-center justify-center font-sans overflow-hidden touch-none">
       
-      {/* 테마 배경 광원 효과 */}
+      {/* 2. 테마 배경 광원 효과: opacity를 낮춰 배경 그라데이션과 조화롭게 설정 */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
         <div
-          className="w-[300px] h-[300px] rounded-full blur-[100px] opacity-20 transition-colors duration-1000"
+          className="w-[320px] h-[320px] rounded-full blur-[100px] opacity-20 transition-colors duration-1000"
           style={{ backgroundColor: getThemeColor() }}
         />
       </div>
 
-      {/* 메인 카드 컨테이너: 드래그 기능 추가(자유 드래그 후 원위치) */}
+      {/* 3. 메인 카드: 드래그 기능과 반응형 높이(85dvh) 적용 */}
       <motion.div 
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
-        dragElastic={0.2}
-        className="max-w-[420px] w-full bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl border border-white/10 relative z-10 overflow-hidden flex flex-col max-h-[90dvh]"
+        dragElastic={0.15}
+        className="w-full max-w-[420px] bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl border border-white/10 relative z-10 overflow-hidden flex flex-col max-h-[85dvh]"
       >
-        <header className="pt-6 pb-2 text-center flex-shrink-0">
+        <header className="pt-7 pb-3 text-center flex-shrink-0">
           <motion.div
             animate={{ rotate: [0, 5, -5, 0] }}
             transition={{ repeat: Infinity, duration: 6 }}
@@ -131,69 +133,71 @@ const App = () => {
           >
             <Sparkles style={{ color: getThemeColor() }} size={24} />
           </motion.div>
-          <h1 className="text-base font-black tracking-[0.2em] text-white uppercase italic">
+          <h1 className="text-base font-black tracking-[0.2em] text-white uppercase italic leading-tight">
             Fortune Lotto 2026
           </h1>
-          <p className="text-[8px] text-slate-500 tracking-widest opacity-60 uppercase">
+          <p className="text-[9px] text-slate-500 tracking-[0.3em] opacity-60 uppercase mt-1">
             Rank Lamp Lab
           </p>
         </header>
 
-        {/* 메인 콘텐츠 영역: 스크롤 최적화 */}
+        {/* 4. 메인 콘텐츠 영역: 내부 스크롤 최적화 */}
         <main className="px-6 pb-8 overflow-y-auto flex-grow custom-scrollbar">
           <AnimatePresence mode="wait">
             {step === 1 && (
               <motion.div
                 key="step1"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="space-y-5"
+                exit={{ opacity: 0, y: -15 }}
+                className="space-y-6 pt-2"
               >
                 <section>
-                  <h2 className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 text-center">
+                  <h2 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.25em] mb-4 text-center">
                     오행 에너지 선택
                   </h2>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-5 gap-2.5">
                     {Object.keys(FENG_SHUI_ELEMENTS).map((key) => (
                       <button
                         key={key}
                         onClick={() => setUserChoice({ ...userChoice, element: key })}
-                        className={`py-3 rounded-xl border-2 transition-all flex flex-col items-center ${
+                        className={`py-3.5 rounded-2xl border-2 transition-all flex flex-col items-center ${
                           userChoice.element === key 
-                            ? "border-current bg-white/5 scale-105" 
-                            : "border-slate-800 opacity-40"
+                            ? "border-current bg-white/10 scale-105 shadow-lg shadow-current/10" 
+                            : "border-slate-800 opacity-40 hover:opacity-70"
                         }`}
                         style={{ color: userChoice.element === key ? FENG_SHUI_ELEMENTS[key].color : "#94a3b8" }}
                       >
-                        <span className="text-base font-bold">{FENG_SHUI_ELEMENTS[key].name[0]}</span>
-                        <span className="text-[7px] mt-0.5 font-medium">{FENG_SHUI_ELEMENTS[key].name.split(" ")[1]}</span>
+                        <span className="text-lg font-black">{FENG_SHUI_ELEMENTS[key].name[0]}</span>
+                        <span className="text-[8px] mt-1 font-bold">{FENG_SHUI_ELEMENTS[key].name.split(" ")[1]}</span>
                       </button>
                     ))}
                   </div>
                 </section>
 
                 <section>
-                  <h2 className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-3 text-center">
+                  <h2 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.25em] mb-4 text-center">
                     생기 집중 공간
                   </h2>
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     {SPOTS.map((spot) => (
                       <button
                         key={spot.id}
                         onClick={() => setUserChoice({ ...userChoice, spot: spot.id })}
-                        className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all ${
-                          userChoice.spot === spot.id ? "border-amber-500 bg-amber-500/10" : "border-slate-800 bg-slate-800/40"
+                        className={`w-full flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                          userChoice.spot === spot.id 
+                          ? "border-amber-500 bg-amber-500/15" 
+                          : "border-slate-800 bg-slate-800/40 hover:border-slate-700"
                         }`}
                       >
-                        <div className="flex items-center gap-3 text-left">
-                          <Home size={14} className={userChoice.spot === spot.id ? "text-amber-500" : "text-slate-600"} />
+                        <div className="flex items-center gap-4 text-left">
+                          <Home size={16} className={userChoice.spot === spot.id ? "text-amber-500" : "text-slate-600"} />
                           <div>
-                            <p className="text-xs font-bold text-slate-200">{spot.name}</p>
-                            <p className="text-[8px] text-slate-500 leading-none mt-1">{spot.desc}</p>
+                            <p className="text-sm font-bold text-slate-200">{spot.name}</p>
+                            <p className="text-[9px] text-slate-500 leading-tight mt-1">{spot.desc}</p>
                           </div>
                         </div>
-                        {userChoice.spot === spot.id && <CheckCircle2 size={12} className="text-amber-500" />}
+                        {userChoice.spot === spot.id && <CheckCircle2 size={14} className="text-amber-500" />}
                       </button>
                     ))}
                   </div>
@@ -202,7 +206,7 @@ const App = () => {
                 <button
                   disabled={!userChoice.element || !userChoice.spot}
                   onClick={() => setStep(2)}
-                  className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 rounded-xl font-black uppercase tracking-widest text-[10px] disabled:opacity-20 active:scale-95 transition-all shadow-xl shadow-amber-500/20"
+                  className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 rounded-2xl font-black uppercase tracking-widest text-xs disabled:opacity-20 active:scale-95 transition-all shadow-xl shadow-amber-500/20"
                 >
                   기운 분석 및 번호 생성
                 </button>
@@ -210,58 +214,58 @@ const App = () => {
             )}
 
             {step === 2 && (
-              <motion.div key="step2" className="py-12 text-center relative flex flex-col justify-center items-center h-full">
+              <motion.div key="step2" className="py-20 text-center relative flex flex-col justify-center items-center h-full min-h-[300px]">
                 <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
                 <div className="relative z-10">
                   <motion.div
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
-                    className="text-xl font-black tracking-[0.3em] text-white uppercase"
+                    animate={{ opacity: [0.4, 1, 0.4], scale: [0.98, 1, 0.98] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="text-2xl font-black tracking-[0.4em] text-white uppercase"
                   >
                     Analyzing
                   </motion.div>
-                  <p className="text-slate-500 text-[9px] mt-4 tracking-widest uppercase">데이터 행운군 추출 중...</p>
+                  <p className="text-slate-500 text-[10px] mt-6 tracking-[0.2em] uppercase">2026 데이터 행운군 추출 중...</p>
                 </div>
               </motion.div>
             )}
 
             {step === 3 && (
-              <motion.div key="step3" className="text-center space-y-5 pt-1">
-                <div className="p-5 bg-slate-950/40 rounded-[1.5rem] border border-white/5 shadow-inner">
-                  <h3 className="text-[8px] font-bold text-slate-600 tracking-[0.3em] uppercase mb-4">Selected Lucky Numbers</h3>
-                  <div className="flex flex-wrap gap-2 justify-center mb-6">
+              <motion.div key="step3" className="text-center space-y-6 pt-2">
+                <div className="p-6 bg-slate-950/40 rounded-[2rem] border border-white/5 shadow-inner">
+                  <h3 className="text-[10px] font-bold text-slate-600 tracking-[0.4em] uppercase mb-5">Lucky Numbers</h3>
+                  <div className="flex flex-wrap gap-2.5 justify-center mb-8">
                     {luckyNumbers.map((num, i) => (
                       <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
+                        initial={{ scale: 0, rotate: -20 }}
+                        animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", damping: 12, delay: i * 0.1 }}
                         key={i}
-                        className="w-9 h-9 flex items-center justify-center rounded-full font-black text-slate-950 text-xs shadow-lg"
+                        className="w-10 h-10 flex items-center justify-center rounded-full font-black text-slate-950 text-sm shadow-lg border border-white/20"
                         style={{ backgroundColor: getThemeColor() }}
                       >
                         {num}
                       </motion.div>
                     ))}
                   </div>
-                  <div className="bg-slate-900/80 p-3.5 rounded-xl border border-white/5">
-                    <p className="text-[11px] text-slate-300 leading-relaxed italic">
+                  <div className="bg-slate-900/90 p-4 rounded-2xl border border-white/5">
+                    <p className="text-[12px] text-slate-300 leading-relaxed italic">
                       "{FENG_SHUI_ELEMENTS[userChoice.element].advices[Math.floor(Math.random() * FENG_SHUI_ELEMENTS[userChoice.element].advices.length)]}"
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <button onClick={handleShare} className="w-full py-3.5 bg-indigo-600 rounded-xl flex items-center justify-center gap-2 font-bold hover:bg-indigo-500 transition-all text-[10px] active:scale-95">
-                    <Share2 size={14} /> 당첨 기원 공유하기
+                <div className="space-y-3">
+                  <button onClick={handleShare} className="w-full py-4 bg-indigo-600 rounded-2xl flex items-center justify-center gap-3 font-bold hover:bg-indigo-500 transition-all text-xs active:scale-95 shadow-lg shadow-indigo-600/20">
+                    <Share2 size={16} /> 당첨 기원 결과 공유
                   </button>
                   <button
                     onClick={() => {
                       setStep(1);
                       setUserChoice({ element: null, spot: null });
                     }}
-                    className="w-full py-3 border border-slate-800 rounded-xl flex items-center justify-center gap-2 text-[9px] text-slate-500 hover:bg-slate-800 transition-all"
+                    className="w-full py-3.5 border border-slate-800 rounded-2xl flex items-center justify-center gap-2 text-[10px] text-slate-500 hover:bg-slate-800 transition-all"
                   >
-                    <RefreshCw size={10} /> 다시 분석하기
+                    <RefreshCw size={12} /> 새로운 기운으로 분석
                   </button>
                 </div>
               </motion.div>
