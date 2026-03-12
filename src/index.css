@@ -2,18 +2,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap");
 
 :root {
-  font-family:
-    "Pretendard",
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: "Pretendard", system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: dark;
   color: #f8fafc;
   background-color: #020617;
 
-  /* 텍스트 렌더링 최적화 유지 */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -27,23 +22,23 @@ body {
   width: 100%;
   height: 100dvh;
 
-  /* Safe Area 대응 */
-  padding: env(safe-area-inset-top) env(safe-area-inset-right)
-    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  /* Safe Area 대응 (중요) */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
   display: flex;
   justify-content: center;
   align-items: center;
-  /* 배경은 App.jsx의 광원 효과와 겹치지 않게 어둡고 깊이감 있게 설정 */
+  /* App.jsx의 내부 광원이 더 잘 보이도록 배경은 아주 어둡고 깊게 */
   background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
   background-attachment: fixed;
 
   overflow: hidden;
+  /* 스크롤 튕김 현상 방지 */
   touch-action: none;
   box-sizing: border-box;
 }
 
-/* 2. 리액트 루트: App.jsx가 꽉 차게 들어갈 수 있도록 설정 */
+/* 2. 리액트 루트: 레이아웃의 중심축 */
 #root {
   width: 100%;
   height: 100%;
@@ -51,15 +46,13 @@ body {
   justify-content: center;
   align-items: center;
 
-  /* 1. 가로 너비를 최대 420px로 제한 (PC에서도 모바일 크기 유지) */
+  /* PC 브라우저에서 모바일 앱 비율을 유지하는 마법의 수치 */
   max-width: 450px;
-  /* 2. 화면 중앙 정렬 */
   margin: 0 auto;
-  /* 3. 내부 요소가 삐져나가지 않게 설정 */
   overflow: hidden;
 }
 
-/* 3. 스크롤바 최적화 (App.jsx의 'custom-scrollbar' 클래스와 매칭) */
+/* 3. 스크롤바 최적화 (App.jsx 내부용) */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
@@ -69,12 +62,15 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(251, 191, 36, 0.2);
+  /* 테마 색상(Amber)과 일치시켜 일관성 부여 */
+  background: rgba(251, 191, 36, 0.3);
   border-radius: 10px;
 }
 
-/* 4. 터치 하이라이트 제거 (모바일 웹 앱 느낌 강화) */
+/* 4. 모바일 사용자 경험(UX) 강화 */
 * {
   -webkit-tap-highlight-color: transparent;
   outline: none;
+  /* 모든 요소에서 박스 모델 일관성 유지 */
+  box-sizing: border-box;
 }
